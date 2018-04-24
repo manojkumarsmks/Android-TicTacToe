@@ -9,6 +9,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import java.util.Random;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String TAG = "LOG_TAG";
@@ -19,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     TextView textView_results;
 
     int[][] gameMatrix = new int[3][3];
+    int playCounter = 0 ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 gameMatrix[0][0] = 1;
+                playCounter++;
                 ChangeTheButton(b0_0);
             }
         });
@@ -58,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 gameMatrix[0][1] = 1;
+                playCounter++;
                 ChangeTheButton(b0_1);
             }
         });
@@ -66,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 gameMatrix[0][2] = 1;
+                playCounter++;
                 ChangeTheButton(b0_2);
             }
         });
@@ -74,6 +80,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 gameMatrix[1][0] = 1;
+                playCounter++;
                 ChangeTheButton(b1_0);
             }
         });
@@ -81,6 +88,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 gameMatrix[1][1] = 1;
+                playCounter++;
                 ChangeTheButton(b1_1);
             }
         });
@@ -88,6 +96,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 gameMatrix[1][2] = 1;
+                playCounter++;
                 ChangeTheButton(b1_2);
             }
         });
@@ -96,6 +105,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 gameMatrix[2][0] = 1;
+                playCounter++;
                 ChangeTheButton(b2_0);
             }
         });
@@ -103,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 gameMatrix[2][1] = 1;
+                playCounter++;
                 ChangeTheButton(b2_1);
             }
         });
@@ -110,6 +121,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 gameMatrix[2][2] = 1;
+                playCounter++;
                 ChangeTheButton(b2_2);
             }
         });
@@ -345,6 +357,10 @@ public class MainActivity extends AppCompatActivity {
 
     protected void ChangeTheButton(Button button) {
 
+        playCounter++;
+        if(playCounter == 9) {
+            RestartTheActivity(b_reset);
+        }
         button.setText("X");
         button.setTextSize(25);
         button.setTextColor(Color.WHITE);
@@ -352,50 +368,63 @@ public class MainActivity extends AppCompatActivity {
         int winner = CheckVictory();
 
         if (winner == 1) {
-            textView_results.setText("YOU WON dude");
+            textView_results.setText("YOU WON");
             RestartTheActivity(b_reset);
         }
         if (winner == 0) {
             RestartTheActivity(b_reset);
-            textView_results.setText("You Lost bro ");
+            textView_results.setText("YOU LOST");
         }
         else {
-
+            boolean flagPlayed = false;
             String suggestedHorizontalMove = checkHorzontalMatrix();
             String suggestedVerticalMove = checkVerticalMatrix();
             String suggestedLTRB = checkDiagonalLTRB();
             String suggestedRTLB = checkDiagonalRTLB();
 
-            Log.d(TAG, "Vertical value "+suggestedVerticalMove);
-
-            if(suggestedHorizontalMove != null) {
+            if(suggestedHorizontalMove != null &&(!flagPlayed)) {
+                flagPlayed = true;
                 ComputerPlay(suggestedHorizontalMove);
             }
 
-            if(suggestedVerticalMove != null) {
+            else if(suggestedVerticalMove != null  &&(!flagPlayed)) {
+                flagPlayed = true;
                 Log.d(TAG, "Vertical Check "+suggestedVerticalMove);
                 ComputerPlay(suggestedVerticalMove);
             }
 
-            if(suggestedLTRB != null) {
+            else if(suggestedLTRB != null  &&(!flagPlayed)) {
+                flagPlayed = true;
+
                 Log.d(TAG, "LTRB "+suggestedLTRB);
                 ComputerPlay(suggestedLTRB);
             }
 
-            if(suggestedRTLB != null) {
+            else if(suggestedRTLB != null  &&(!flagPlayed)){
+                flagPlayed = true;
                 Log.d(TAG, "RTLB "+suggestedRTLB);
                 ComputerPlay(suggestedRTLB);
             }
 
-            //String suggestVerticalMove = checkVerticalMatrix();
-            //String suggestedDiagonalMove = checkDiagonalMatrix();
+            else {
+                while(true) {
+                    int i = randInt(0, 2);
+                    int j = randInt(0, 2);
 
-            //Log.d(TAG, String.valueOf(suggestedHorizontalMove.getI()));
-            //Log.d(TAG, "Vertical Move = " + suggestVerticalMove);
-
+                    if(gameMatrix[i][j] == -1) {
+                        ComputerPlay(i+" "+j);
+                        break;
+                    }
+                }
+            }
 
         }
 
+    }
+
+    private int randInt(int min, int max) {
+        Random rand = new Random();
+        return rand.nextInt((max - min) + 1) + min;
     }
 
     private void ComputerPlay(String suggestedHorizontalMove) {
