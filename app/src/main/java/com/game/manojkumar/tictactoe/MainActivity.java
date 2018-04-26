@@ -176,10 +176,10 @@ public class MainActivity extends AppCompatActivity {
                 if(gameMatrix[j][i] == -1)
                     counter_unplayer++;
 
-                Log.d(TAG, j +" "+ i + " --- "+gameMatrix[j][i]);
+                // Log.d(TAG, j +" "+ i + " --- "+gameMatrix[j][i]);
             }
 
-            Log.d(TAG, "Computer Counter "+counter_computer + " Player Counter "+counter_player + " Unplayed Counter "+counter_unplayer);
+            // Log.d(TAG, "Computer Counter "+counter_computer + " Player Counter "+counter_player + " Unplayed Counter "+counter_unplayer);
             if(counter_player == 2 && counter_unplayer == 1) {
                 for(int k = 0; k < gameMatrix.length; k++) {
                     if(gameMatrix[k][i] == -1)
@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
                 counter_unplayer++;
         }
 
-        Log.d(TAG, "LT to RB Counter Player "+counter_player + " Counter Unplayed "+ counter_unplayer + "counter_computer" +counter_computer);
+        // Log.d(TAG, "LT to RB Counter Player "+counter_player + " Counter Unplayed "+ counter_unplayer + "counter_computer" +counter_computer);
         if (counter_player == 2 && counter_unplayer == 1) {
             for (int k = 0; k < gameMatrix.length; k++) {
                 if (gameMatrix[k][k] == -1)
@@ -240,7 +240,7 @@ public class MainActivity extends AppCompatActivity {
         else if(gameMatrix[1][1] == -1)
             counter_unplayer++;
 
-        Log.d(TAG, "RT to LB  Counter Player "+counter_player + " Counter Unplayed "+ counter_unplayer + "counter_computer" +counter_computer);
+        // Log.d(TAG, "RT to LB  Counter Player "+counter_player + " Counter Unplayed "+ counter_unplayer + "counter_computer" +counter_computer);
 
 
         if (counter_player == 2 && counter_unplayer == 1) {
@@ -253,7 +253,6 @@ public class MainActivity extends AppCompatActivity {
         }
         return null;
     }
-
 
     protected int CheckVictory() {
 
@@ -357,7 +356,9 @@ public class MainActivity extends AppCompatActivity {
 
     protected void ChangeTheButton(Button button) {
 
-        playCounter++;
+        //playCounter++;
+
+        Log.d(TAG, "Player Counter is "+playCounter);
         if(playCounter == 9) {
             RestartTheActivity(b_reset);
         }
@@ -389,20 +390,16 @@ public class MainActivity extends AppCompatActivity {
 
             else if(suggestedVerticalMove != null  &&(!flagPlayed)) {
                 flagPlayed = true;
-                Log.d(TAG, "Vertical Check "+suggestedVerticalMove);
                 ComputerPlay(suggestedVerticalMove);
             }
 
             else if(suggestedLTRB != null  &&(!flagPlayed)) {
                 flagPlayed = true;
-
-                Log.d(TAG, "LTRB "+suggestedLTRB);
                 ComputerPlay(suggestedLTRB);
             }
 
             else if(suggestedRTLB != null  &&(!flagPlayed)){
                 flagPlayed = true;
-                Log.d(TAG, "RTLB "+suggestedRTLB);
                 ComputerPlay(suggestedRTLB);
             }
 
@@ -428,27 +425,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void ComputerPlay(String suggestedHorizontalMove) {
-
-        Log.d(TAG, "Computer Plays "+suggestedHorizontalMove);
-
         int i = Character.getNumericValue(suggestedHorizontalMove.charAt(0));
         int j = Character.getNumericValue(suggestedHorizontalMove.charAt(2));
-        Log.d(TAG, "I and J are "+i + " " +j);
         gameMatrix[i][j] = 0;
 
         Button button = ReturnMatrix(i, j);
-
         button.setText("O");
         button.setTextSize(25);
         button.setTextColor(Color.WHITE);
         button.setEnabled(false);
-
-
-
     }
 
     public Button ReturnMatrix(int i , int j) {
-
         if(i == 0  && j == 0)
             return b0_0;
         else if(i == 0  && j == 1)
