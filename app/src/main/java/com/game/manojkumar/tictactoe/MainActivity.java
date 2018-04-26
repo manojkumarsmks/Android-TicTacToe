@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
     TextView textView_results;
 
     int[][] gameMatrix = new int[3][3];
-    int playCounter = 0 ;
+    int playCounter = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -357,9 +357,7 @@ public class MainActivity extends AppCompatActivity {
     protected void ChangeTheButton(Button button) {
 
         //playCounter++;
-
-        Log.d(TAG, "Player Counter is "+playCounter);
-        if(playCounter == 9) {
+        if(playCounter >= 9) {
             RestartTheActivity(b_reset);
         }
         button.setText("X");
@@ -414,9 +412,8 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
             }
-
         }
-
+        Log.d(TAG, "Player Counter is "+playCounter);
     }
 
     private int randInt(int min, int max) {
@@ -425,6 +422,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void ComputerPlay(String suggestedHorizontalMove) {
+        playCounter++;
         int i = Character.getNumericValue(suggestedHorizontalMove.charAt(0));
         int j = Character.getNumericValue(suggestedHorizontalMove.charAt(2));
         gameMatrix[i][j] = 0;
